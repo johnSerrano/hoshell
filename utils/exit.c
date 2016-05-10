@@ -3,7 +3,7 @@
 
 void cmd_exit(char **command) {
   int arg_val;
-  if (len_command(command) >= 1)
+  if (len_command(command) <= 1)
     exit(0);
 
   /* try to parse argv[1] as an int.
