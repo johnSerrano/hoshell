@@ -1,11 +1,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "libshell/libshell.h"
+#include "utils/utils.h"
+#include <sys/wait.h>
 
 void fork_exec(char **command, char **env);
 void free_command(char **command);
+void check_builtins(char **command, __attribute__((unused)) char **env);
 
-int main(int argc, char **argv, char **env) {
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env) {
   char **command;
   char *line;
   /* read from stdin */
@@ -18,7 +21,6 @@ int main(int argc, char **argv, char **env) {
     free_command(command);
     free(line);
   }
-
 }
 
 /* frees a char ** */
@@ -34,7 +36,9 @@ void free_command(char **command) {
 /* run a command without killing the main thread */
 void fork_exec(char **command, char **env) {
   int status;
-  int pid = fork();
+  int pid;
+  check_builtins(command, env);
+  pid = fork();
   if (pid == -1) {
     write(2, "Fork failed", 11);
   } else if (pid == 0) {
@@ -43,4 +47,10 @@ void fork_exec(char **command, char **env) {
     wait(&status);
   }
   return;
+}
+
+void check_builtins(char **command, __attribute__((unused)) char **env) {
+  if (strings_compare(command[0], "exit") == 0) {
+    cmd_exit(command);
+  }
 }
