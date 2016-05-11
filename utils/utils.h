@@ -3,3 +3,5 @@ int string_to_int(char *s);
 int len_command(char **command);
 int strings_compare(char *s1, const char *s2);
 void cmd_exit(char **command);
+int print_env(char** envp);
+int str_len(char *str);
