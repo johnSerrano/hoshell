@@ -8,3 +8,4 @@ char *read_line(int fd);
 char **string_split(char *str, char seperator);
 int print_env(char** envp);
 int str_len(char *str);
+void free_command(char **command);

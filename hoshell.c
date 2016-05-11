@@ -4,7 +4,6 @@
 #include <sys/wait.h>
 
 void fork_exec(char **command, char **env);
-void free_command(char **command);
 int check_builtins(char **command, __attribute__((unused)) char **env);
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env) {
@@ -20,16 +19,6 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
     free_command(command);
     free(line);
   }
-}
-
-/* frees a char ** */
-void free_command(char **command) {
-  int counter = 0;
-  while (command[counter] != 0) {
-    free(command[counter]);
-    counter++;
-  }
-  free(command);
 }
 
 /* run a command without killing the main thread */
