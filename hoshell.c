@@ -37,6 +37,9 @@ void free_command(char **command) {
 void fork_exec(char **command, char **env) {
   int status;
   int pid;
+
+  /*TODO (jo) link to env or PATH function here in Progress*/
+
   if (check_builtins(command, env)) return;
   pid = fork();
   if (pid == -1) {
