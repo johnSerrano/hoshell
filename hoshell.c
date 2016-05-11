@@ -6,7 +6,7 @@
 
 void fork_exec(char **command, char **env);
 void free_command(char **command);
-void check_builtins(char **command, __attribute__((unused)) char **env);
+int check_builtins(char **command, __attribute__((unused)) char **env);
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env) {
   char **command;
@@ -37,7 +37,7 @@ void free_command(char **command) {
 void fork_exec(char **command, char **env) {
   int status;
   int pid;
-  check_builtins(command, env);
+  if (check_builtins(command, env)) return;
   pid = fork();
   if (pid == -1) {
     write(2, "Fork failed", 11);
@@ -49,8 +49,14 @@ void fork_exec(char **command, char **env) {
   return;
 }
 
-void check_builtins(char **command, __attribute__((unused)) char **env) {
+/* check builtin commands before searching path.
+ * returns 1 if found, 0 otherwise
+ */
+int check_builtins(char **command, __attribute__((unused)) char **env) {
   if (strings_compare(command[0], "exit") == 0) {
     cmd_exit(command);
+    /* shouldn't run except if there is an error exiting */
+    return 1;
   }
+  return 0;
 }
