@@ -10,5 +10,6 @@ void cmd_exit(char **command) {
    * if that fails, return 0. (default return of string_to_int)
    */
   arg_val = string_to_int(command[1]);
+  free_command(command);
   exit(arg_val);
 }
