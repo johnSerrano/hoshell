@@ -54,10 +54,14 @@ void fork_exec(char **command, char **env) {
 /* check builtin commands before searching path.
  * returns 1 if found, 0 otherwise
  */
-int check_builtins(char **command, __attribute__((unused)) char **env) {
+int check_builtins(char **command, char **env) {
   if (strings_compare(command[0], "exit") == 0) {
     cmd_exit(command);
     /* shouldn't run except if there is an error exiting */
+    return 1;
+  }
+  if (strings_compare(command[0], "env") == 0) {
+    print_env(env);
     return 1;
   }
   return 0;

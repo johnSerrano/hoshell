@@ -6,3 +6,5 @@ void cmd_exit(char **command);
 char *string_copy(char *dest, char *src);
 char *read_line(int fd);
 char **string_split(char *str, char seperator);
+int print_env(char** envp);
+int str_len(char *str);
