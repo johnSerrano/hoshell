@@ -41,6 +41,13 @@ void fork_exec(char **command, char **env) {
   /*TODO (jo) link to env or PATH function here in Progress*/
 
   if (check_builtins(command, env)) return;
+
+  /*
+  TODO - run path function return command(full path)
+    
+  cmd = either command[0] OR returned command from above
+  */
+
   pid = fork();
   if (pid == -1) {
     write(2, "Fork failed", 11);
