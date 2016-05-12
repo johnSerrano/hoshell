@@ -8,3 +8,5 @@ libutils.a:
 
 clean:
 	rm hoshell utils/utils.h.gch libutils.a
+
+re: clean all

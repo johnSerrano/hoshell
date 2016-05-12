@@ -32,16 +32,15 @@ void *ret_correct_path(char *cmd, char **env) {
       continue;
     }
     else {
-        while ((pDirent = readdir(pDirr)) != NULL) {
-          if (pDirent->d_name == cmd) {
-            cmd_cpy = str_cat(*path_cpy, *cmd);
-            return cmd_cpy;
-          }
+      while ((pDirent = readdir(pDirr)) != NULL) {
+        if (pDirent->d_name == cmd) {
+          cmd_cpy = str_cat(*path_cpy, *cmd);
+          return cmd_cpy;
         }
       }
     }
-
   }
+}
 
   /*more to do*/
 }
