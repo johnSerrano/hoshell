@@ -12,7 +12,7 @@ void init_env() {
   int i;
   size = len_command(environ_local);
 
-  environ_local = malloc (size * sizeof(char*));
+  environ_local = malloc ((size+1) * sizeof(char*));
 
   for (i=0 ; i<size ; i++)
   {
