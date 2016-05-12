@@ -13,3 +13,7 @@ void init_env();
 void set_env(char *name, char *value);
 void cd(char *address);
 char *get_env(char *check);
+char * str_cat(char *dest, char *src);
+char * str_ncat(char *dest, char *src, int len);
+void pwd();
+char *get_wd();
