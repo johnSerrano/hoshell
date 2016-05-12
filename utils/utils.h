@@ -11,3 +11,4 @@ int str_len(char *str);
 void free_command(char **command);
 void init_env();
 void set_env(char *name, char *value);
+void cd(char *address);

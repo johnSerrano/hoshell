@@ -22,7 +22,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
     command = string_split(line, '#');
     string_copy(line, command[0]);
     free_command(command);
-    
+
     command = string_split(line, ' ');
 
     fork_exec(command, env);
@@ -68,6 +68,14 @@ int check_builtins(char **command, char **env) {
   }
   if (strings_compare(command[0], "env") == 0) {
     print_env(env);
+    return 1;
+  }
+  if (strings_compare(command[0], "cd") == 0) {
+    if (len_command(command) <= 1) {
+      /* error */
+      return 1;
+    }
+    cd(command[1]);
     return 1;
   }
   return 0;
