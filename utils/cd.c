@@ -8,5 +8,6 @@ void cd(char *address) {
   if (chdir(address) == -1) {
     set_env
     write(2, "cd: no such directory\n", 22);
+    return;
   }
 }
