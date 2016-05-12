@@ -34,12 +34,8 @@ void *ret_correct_path(char *cmd, char **env) {
     else {
         while ((pDirent = readdir(pDirr)) != NULL) {
           if (pDirent->d_name == cmd) {
-            cmd_len = str_len(*path_cpy) + str_len(*cmd);
-            cmd_cpy = str_ncat(*path_cpy, *cmd, cmd_len);
+            cmd_cpy = str_cat(*path_cpy, *cmd);
             return cmd_cpy;
-          }
-          else {
-
           }
         }
       }
