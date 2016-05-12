@@ -6,7 +6,7 @@ void cd(char *address) {
     address = get_env("OLDPWD");
   }
   if (chdir(address) == -1) {
-    set_env
+    /*set_env*/
     write(2, "cd: no such directory\n", 22);
   }
 }

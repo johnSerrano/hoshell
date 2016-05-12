@@ -1,17 +1,16 @@
 #include <stdlib.h>
 #include "utils.h"
 
-void *path_or_not(char *cmd, char **env) {
+void *ret_correct_path(char *cmd, char **env) {
   char *cmd_cpy = *cmd;
   char **env_cpy = **env;
-  char **path;
+  char **path, char **path_cpy;
+  DIR *pDir;
+  struct dirent *pDirent;
 
   /*if cmd is a path, return it without changing it*/
-  while (*cmd_cpy != 0) {
-    if (*cmd_cpy == '/') {
-      return cmd;
-    }
-    cmd_cpy++;
+  if (check_path(*cmd_cpy) == 1) {
+    return cmd;
   }
 
   /*splits the path env variable from env variables and splits it into paths*/
@@ -22,23 +21,50 @@ void *path_or_not(char *cmd, char **env) {
       break;
     }
   }
+  path_cpy = path;
 
   /*search thru path for cmd */
+  while (**path_cpy != 0) {
+    /* -> open path find file return cmd after str cat*/
+    pDir = openddir(*path_cpy);
+    if (pDir == NULL) {
+      *path_cpy++;
+      while ((pDirent = readdir(pDirr)) != NULL) {
+        if (pDirent->d_name == cmd) {
+/*!!!*/   cmd_cpy = strncat(pDirent->d_name, cmd, X);
+        }
+      }
+    }
+
+  }
 
   /*more to do*/
 }
 
+/*if cmd is a path, return it without changing it*/
+int check_path(char *cmd_cpy) {
+  while (*cmd_cpy != 0) {
+    if (*cmd_cpy == '/') {
+      return 1;
+    }
+    cmd_cpy++;
+  }
+  return 0;
+}
+
+
 /*
 
 TODO:
-  parse thru env etc
-  first: if '/' anywhere in str return str untouched. DONE
-  else: use str split with ; separator DONE
-  which gives a char ** (null terminated)
-~~
-return char * thats abs path of program+programname
+  open folders and paths
+  replace strncat with your own strncat
+  malloc all the things!!!
+  free all the things!!!
 
-in hoshell.c
-  in fork_exec
+  ~~
+  return char * thats abs path of program+programname
+
+  in hoshell.c
+    in fork_exec
 
 */
