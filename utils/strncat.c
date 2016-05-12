@@ -15,15 +15,14 @@ char * str_ncat(char *dest, char *src, int len) {
   return ret;
 }
 
-char * str_cat(char *dest, char *src) {
+char *str_cat(char *dest, char *src) {
   char *ret = dest;
-  while (*dest) {
+  while (*dest != 0) dest++;
+  while (*src != 0) {
+    *dest = *src;
+    src++;
     dest++;
   }
-  while (1) {
-    if (!(*dest++ = *src++)) {
-      return ret;
-    }
-  }
+  *dest = 0;
   return ret;
 }
