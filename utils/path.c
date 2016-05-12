@@ -14,11 +14,16 @@ void *path_or_not(char *cmd, char **env) {
     cmd_cpy++;
   }
 
-  /*gets */
-  while (**env_cpy != 0)
+  /*splits the path env variable from env variables and splits it into paths*/
+  while (**env_cpy != 0){
     if (*env_cpy[0] == 'P' && *env_cpy[1] == 'A' && *env_cpy[2] == 'T' && *env_cpy[3] == 'H') {
-      path = string_split(*env_cpy, ';');
+      path = string_split(*env_cpy, '=');
+      path = string_split(path[1], ';');
+      break;
     }
+  }
+
+  /*search thru path for cmd */
 
   /*more to do*/
 }
@@ -26,9 +31,9 @@ void *path_or_not(char *cmd, char **env) {
 /*
 
 TODO:
-  parse thru env
+  parse thru env etc
   first: if '/' anywhere in str return str untouched. DONE
-  else: use str split with ; separator
+  else: use str split with ; separator DONE
   which gives a char ** (null terminated)
 ~~
 return char * thats abs path of program+programname
