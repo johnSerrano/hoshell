@@ -12,3 +12,4 @@ void free_command(char **command);
 void init_env();
 void set_env(char *name, char *value);
 void cd(char *address);
+char *get_env(char *check);

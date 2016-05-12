@@ -34,6 +34,7 @@ int get_env_index(char **env, char *check) {
       /* found variable */
       return i;
     }
+    i++;
   }
   return -1;
 }
