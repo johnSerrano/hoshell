@@ -17,6 +17,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
   while (1) {
     write(1, "HOS :: ", 7);
     line = read_line(0);
+
+    /*ignore comments*/
+    command = string_split(line, '#');
+    string_copy(line, command[0]);
+    free_command(command);
+    
     command = string_split(line, ' ');
 
     fork_exec(command, env);
