@@ -79,5 +79,3 @@ void set_env(char *name, char *value) {
   environ_local[size+1] = NULL;
   environ = environ_local;
 }
-
-/* TODO free env function */
