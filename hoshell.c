@@ -9,6 +9,10 @@ int check_builtins(char **command, __attribute__((unused)) char **env);
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env) {
   char **command;
   char *line;
+
+  /* moves environment variables to the heap */
+  init_env();
+
   /* read from stdin */
   while (1) {
     write(1, "HOS :: ", 7);
@@ -32,7 +36,7 @@ void fork_exec(char **command, char **env) {
 
   /*
   TODO - run path function return command(full path)
-    
+
   cmd = either command[0] OR returned command from above
   */
 
