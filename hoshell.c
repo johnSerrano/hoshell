@@ -78,5 +78,9 @@ int check_builtins(char **command, char **env) {
     cd(command[1]);
     return 1;
   }
+  if (strings_compare(command[0], "pwd") == 0) {
+    pwd();
+    return 1;
+  }
   return 0;
 }
