@@ -7,6 +7,7 @@ void *ret_correct_path(char *cmd, char **env) {
   char **path, char **path_cpy;
   DIR *pDir;
   struct dirent *pDirent;
+  int cmd_len;
 
   /*if cmd is a path, return it without changing it*/
   if (check_path(*cmd_cpy) == 1) {
@@ -28,10 +29,18 @@ void *ret_correct_path(char *cmd, char **env) {
     /* -> open path find file return cmd after str cat*/
     pDir = openddir(*path_cpy);
     if (pDir == NULL) {
-      *path_cpy++;
-      while ((pDirent = readdir(pDirr)) != NULL) {
-        if (pDirent->d_name == cmd) {
-/*!!!*/   cmd_cpy = strncat(pDirent->d_name, cmd, X);
+      continue;
+    }
+    else {
+        while ((pDirent = readdir(pDirr)) != NULL) {
+          if (pDirent->d_name == cmd) {
+            cmd_len = str_len(*path_cpy) + str_len(*cmd);
+            cmd_cpy = str_ncat(*path_cpy, *cmd, cmd_len);
+            return cmd_cpy;
+          }
+          else {
+
+          }
         }
       }
     }
