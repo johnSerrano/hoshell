@@ -1,34 +1,31 @@
 #include <stdlib.h>
 #include "utils.h"
 
-int attach_path(char *cmd) {
-  char *ret;
-  int index;
-  int fd;
-  function(ret, sizeof(ret)); /*no idea what this does yet*/
-
-
-  for (index=0; search_path[index] != NULL; index++) {
-    strcpy(ret, search_path[index]);
-    strncat(ret, cmd, strlen(cmd));
-    if ((fd = open(ret, O_RDONLY)) > 0) {
-      strncpy(cmd, ret, strlen(ret));
-      close(fd);
-      return 0;
+void *path_or_not(char *cmd, char **env) {
+  char *cmd_cpy = *cmd;
+  char **env_cpy = **env;
+  char **path;
+  /*if cmd is a path, return it without changing it*/
+  while (*cmd_cpy != 0) {
+    if (*cmd_cpy == '/') {
+      return cmd;
     }
+    cmd_cpy++;
   }
-  return 0;
+
+  while (**env_cpy != 0)
+    if (*env_cpy[0] == 'P' && *env_cpy[1] == 'A' && *env_cpy[2] == 'T' && *env_cpy[3] == 'H') {
+      path = string_split(*env_cpy, ';');
+    }
+
+  /*more to do*/
 }
-
-void get_path_string();
-
-void insert_path_str_to_search()
-
 
 /*
 
-TODO parse thru env
-  1st: if '/' anywhere in str return str untouched.
+TODO:
+  parse thru env
+  first: if '/' anywhere in str return str untouched. DONE
   else: use str split with ; separator
   which gives a char ** (null terminated)
 ~~
