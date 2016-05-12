@@ -9,6 +9,10 @@ int check_builtins(char **command, __attribute__((unused)) char **env);
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env) {
   char **command;
   char *line;
+
+  /* moves environment variables to the heap */
+  init_env();
+
   /* read from stdin */
   while (1) {
     write(1, "HOS :: ", 7);
