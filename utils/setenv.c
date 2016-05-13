@@ -32,8 +32,10 @@ int get_env_index(char **env, char *check) {
     env_var = string_split(env[i], '=');
     if (strings_compare(env_var[0], check) == 0) {
       /* found variable */
+      free_command(env_var);
       return i;
     }
+    free_command(env_var);
     i++;
   }
   return -1;
