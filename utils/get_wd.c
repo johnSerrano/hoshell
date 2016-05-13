@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <string.h>
 
+/* NOTE: LEAKS 50B every time you run pwd */
+/* Does not work with from inside a mounted filesystem */
+
 char *path_concat(char *path, char *newname);
 char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode);
 char *get_wd();
@@ -14,8 +17,6 @@ unsigned int get_self_inode(DIR *dir);
 
 void pwd() {
   char *wd = get_wd();
-
-  /* TODO failing because wd is returning null */
 
   if (wd == NULL) return;
 
@@ -28,6 +29,7 @@ char *get_wd() {
   char *reverse_path = malloc(sizeof(char) * 3);
   DIR *dir = opendir(".");
   int self_inode = get_self_inode(dir);
+  closedir(dir);
   string_copy(path, "");
   string_copy(reverse_path, "..");
   return get_wd_recurse(path, reverse_path, self_inode);
@@ -39,27 +41,27 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode) 
   unsigned int self_inode = get_self_inode(dir);
   int root_boolean = is_root(dir, self_inode);
   struct dirent *dir_entry;
-  /*printf("self_inode: %d, search_inode: %d\n", self_inode, search_inode);*/
   dir_entry = readdir(dir);
 
    while (dir_entry != NULL) {
-     /*printf("checking inode %d, %s\n", (int) dir_entry->d_ino, dir_entry->d_name);*/
      if (dir_entry->d_ino == search_inode) {
-       /*printf("recurse loop in found\n");*/
        /* prepend name/ to path */
        path = path_concat(path, dir_entry->d_name);
        /* break recursion if no parent */
        if (root_boolean) {
          /* PROBABLY WORKS BUT COULD CAUSE BUG MAYBE */
          path = path_concat(path, "");
+         closedir(dir);
          return path;
        }
 
        reverse_path = path_concat(reverse_path, "..");
+       closedir(dir);
        return get_wd_recurse(path, reverse_path, self_inode);
      }
      dir_entry = readdir(dir);
   }
+  closedir(dir);
   return NULL;
 }
 
@@ -77,7 +79,6 @@ int is_root(DIR *dir, unsigned int self_inode) {
     dir_entry = readdir(dir);
   }
   rewinddir(dir);
-  /*printf("IS ROOT: %d\n", ret);*/
   return ret;
 }
 
@@ -100,12 +101,10 @@ unsigned int get_self_inode(DIR *dir) {
 char *path_concat(char *path, char *newname) {
   int size = str_len(newname) + str_len(path) + 2;
   char *temp = malloc(size * sizeof(char));
-  /*printf("pc:  %s\n", path);*/
   string_copy(temp, newname);
   str_cat(temp, "/");
   str_cat(temp, path);
-  /* free(path);*/
+  free(path);
   path = temp;
-  /*printf("pc2: %s\n", path);*/
   return path;
 }

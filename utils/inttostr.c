@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "utils.h"
 
 char *do_work(int, char*);
 char *add_digit(char digit, char *str);
@@ -25,15 +26,10 @@ char *int_to_string(int n)
 }
 
 char *add_digit(char digit, char *str) {
-  int counter = 2; /* nonzero because null terminator and extension */
-  char *strc = str;
-  while (*str != 0) {
-    counter++;
-    str++;
-  }
-  *(strc+counter-2) = digit;
-  str = malloc(sizeof(char)*(counter));
-  str = strcpy(str, strc);
+  char *newdigit = malloc(2*sizeof(char));
+  newdigit[0] = digit;
+  newdigit[1] = 0;
+  str = str_cat(str, newdigit);
   return str;
 }
 
