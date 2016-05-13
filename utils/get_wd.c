@@ -7,7 +7,6 @@
 #include <string.h>
 
 /* NOTE: LEAKS 50B every time you run pwd */
-/* Does not work with from inside a mounted filesystem */
 
 char *path_concat(char *path, char *newname);
 char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode);
@@ -50,7 +49,6 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode) 
        path = path_concat(path, dir_entry->d_name);
        /* break recursion if no parent */
        if (root_boolean) {
-         /* PROBABLY WORKS BUT COULD CAUSE BUG MAYBE */
          path = path_concat(path, "");
          closedir(dir);
          return path;
@@ -98,7 +96,10 @@ unsigned int get_self_inode(DIR *dir) {
   return ret;
 }
 
-/* A better check than using dirent struct inode field */
+/* A better check than using dirent struct inode field.
+ * Checks each directory's inode from within that directory to guarantee
+ * functionality at mount points
+ */
 int check_inode(char *reverse_path, unsigned int search_inode,
                 struct dirent *dir_entry) {
   DIR *checkdir;
