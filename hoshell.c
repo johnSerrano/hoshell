@@ -53,6 +53,7 @@ void fork_exec(char **command, char **env) {
     execve(command[0], command, env);
   } else {
     wait(&status);
+    update_status(status);
   }
   return;
 }
@@ -80,6 +81,10 @@ int check_builtins(char **command, char **env) {
   }
   if (strings_compare(command[0], "pwd") == 0) {
     pwd();
+    return 1;
+  }
+  if (strings_compare(command[0], "$?") == 0) {
+    print_status();
     return 1;
   }
   return 0;
