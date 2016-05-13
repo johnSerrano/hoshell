@@ -71,6 +71,7 @@ void set_env(char *name, char *value) {
   /* If variable exists in environ_local */
   if (var_index != -1) {
     /* replace variable */
+    free(environ_local[var_index]);
     environ_local[var_index] = var;
     return;
   }
