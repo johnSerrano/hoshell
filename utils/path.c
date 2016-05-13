@@ -4,12 +4,9 @@
 #include <stdio.h>
 #include "utils.h"
 
-void *ret_correct_path(char *cmd, char **env) {
+void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
   char *cmd_cpy = cmd;
-  char **env_cpy = env;
   char **path;
-  char *en_var;
-  char *str;
   DIR *pDir;
   struct dirent *pDirent;
   int i;
@@ -21,7 +18,7 @@ void *ret_correct_path(char *cmd, char **env) {
   }
 
   /*splits the path env variable from env variables and splits it into paths*/
-  for (i=0; env_cpy[i] != 0; i++){
+  /*for (i=0; env_cpy[i] != 0; i++){
     en_var = env_cpy[i];
     if (en_var[0] == 'P' && en_var[1] == 'A' && en_var[2] == 'T' && en_var[3] == 'H') {
       path = string_split(env_cpy[i], '=');
@@ -30,7 +27,8 @@ void *ret_correct_path(char *cmd, char **env) {
       free_command(path);
       path = string_split(str, ':');
     }
-  }
+  }*/
+  path = string_split(get_env("PATH"), ':');
 
   /*search thru path for cmd */
   for (i=0; path[i] != 0; i++) {
@@ -45,14 +43,12 @@ void *ret_correct_path(char *cmd, char **env) {
           cmd_cpy = path[i];
           str_cat(cmd_cpy, "/");
           str_cat(cmd_cpy, cmd);
-          printf("test: %s$end\n", cmd_cpy);
         }
       }
     }
     closedir(pDir);
   }
   free_command(path);
-  free(str);
   return cmd_cpy;
 }
 
