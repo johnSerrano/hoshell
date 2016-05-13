@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
+#include <stdio.h>
 #include "utils.h"
 
 void *ret_correct_path(char *cmd, char **env) {
@@ -8,12 +9,14 @@ void *ret_correct_path(char *cmd, char **env) {
   char **env_cpy = env;
   char **path;
   char *en_var;
+  char *str;
   DIR *pDir;
   struct dirent *pDirent;
   int i;
 
   /*if cmd is a path, return it without changing it*/
   if (check_path(cmd_cpy) == 1) {
+    free(cmd_cpy);
     return cmd;
   }
 
@@ -22,7 +25,10 @@ void *ret_correct_path(char *cmd, char **env) {
     en_var = env_cpy[i];
     if (en_var[0] == 'P' && en_var[1] == 'A' && en_var[2] == 'T' && en_var[3] == 'H') {
       path = string_split(env_cpy[i], '=');
-      path = string_split(path[1], ':');
+      str = malloc(str_len(path[1]));
+      string_copy(str, path[1]);
+      free_command(path);
+      path = string_split(str, ':');
     }
   }
 
@@ -39,13 +45,15 @@ void *ret_correct_path(char *cmd, char **env) {
           cmd_cpy = path[i];
           str_cat(cmd_cpy, "/");
           str_cat(cmd_cpy, cmd);
-          return cmd_cpy;
+          printf("test: %s$end\n", cmd_cpy);
         }
       }
     }
+    closedir(pDir);
   }
-  /* Command not found, return NULL */
-  return NULL;
+  free_command(path);
+  free(str);
+  return cmd_cpy;
 }
 
 /*if cmd is a path, return it without changing it*/
