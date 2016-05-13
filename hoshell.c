@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "utils/utils.h"
 #include <sys/wait.h>
+#include <stdio.h> /*TODO remove after testing?*/
 
 void fork_exec(char **command, char **env);
 int check_builtins(char **command, __attribute__((unused)) char **env);
@@ -35,6 +36,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 void fork_exec(char **command, char **env) {
   int status;
   int pid;
+  char *cmd = command[0];
 
   /*TODO (jo) link to env or PATH function here in Progress*/
 
@@ -46,11 +48,13 @@ void fork_exec(char **command, char **env) {
   cmd = either command[0] OR returned command from above
   */
 
+  cmd = ret_correct_path(cmd, env);
+
   pid = fork();
   if (pid == -1) {
     write(2, "Fork failed", 11);
   } else if (pid == 0) {
-    execve(command[0], command, env);
+    execve(cmd, command, env);
   } else {
     wait(&status);
     update_status(status);

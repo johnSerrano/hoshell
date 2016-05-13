@@ -1,18 +1,17 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <string.h>
 #include "utils.h"
 
 void *ret_correct_path(char *cmd, char **env) {
   char *cmd_cpy = cmd;
   char **env_cpy = env;
   char **path;
+  char *en_var;
   DIR *pDir;
   struct dirent *pDirent;
   int i;
-
-  printf("cmd: %s\n", cmd);
-  printf("cmd_cpy: %s\n", cmd_cpy);
 
   /*if cmd is a path, return it without changing it*/
   if (check_path(cmd_cpy) == 1) {
@@ -20,25 +19,26 @@ void *ret_correct_path(char *cmd, char **env) {
   }
 
   /*splits the path env variable from env variables and splits it into paths*/
-  while (**env_cpy != 0){
-    if (*env_cpy[0] == 'P' && *env_cpy[1] == 'A' && *env_cpy[2] == 'T' && *env_cpy[3] == 'H') {
-      path = string_split(*env_cpy, '=');
-      path = string_split(path[1], ';');
-      break;
+  for (i=0; env_cpy[i] != 0; i++){
+    en_var = env_cpy[i];
+    if (en_var[0] == 'P' && en_var[1] == 'A' && en_var[2] == 'T' && en_var[3] == 'H') {
+      path = string_split(env_cpy[i], '=');
+      path = string_split(path[1], ':');
     }
   }
 
   /*search thru path for cmd */
   for (i=0; path[i] != 0; i++) {
     /* -> open path find file return cmd after str cat*/
-    pDir = opendir(*path);
+    pDir = opendir(path[i]);
     if (pDir == NULL) {
       continue;
     }
     else {
       while ((pDirent = readdir(pDir)) != NULL) {
-        if (pDirent->d_name == cmd) {
-          cmd_cpy = *path;
+        if (strings_compare(cmd, pDirent->d_name) == 0) {
+          cmd_cpy = path[i];
+          str_cat(cmd_cpy, "/");
           str_cat(cmd_cpy, cmd);
           return cmd_cpy;
         }
