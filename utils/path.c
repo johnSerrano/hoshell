@@ -9,7 +9,7 @@ void *ret_correct_path(char *cmd, char **env) {
   char **path;
   DIR *pDir;
   struct dirent *pDirent;
-  int cmd_len;
+  int i;
 
   printf("cmd: %s\n", cmd);
   printf("cmd_cpy: %s\n", cmd_cpy);
@@ -29,24 +29,23 @@ void *ret_correct_path(char *cmd, char **env) {
   }
 
   /*search thru path for cmd */
-  while (**path != 0) {
+  for (i=0; path[i] != 0; i++) {
     /* -> open path find file return cmd after str cat*/
     pDir = opendir(*path);
     if (pDir == NULL) {
       continue;
     }
     else {
-      while ((pDirent = readdir(pDirr)) != NULL) {
+      while ((pDirent = readdir(pDir)) != NULL) {
         if (pDirent->d_name == cmd) {
-          cmd_cpy = str_cat(*path, *cmd);
+          cmd_cpy = *path;
+          str_cat(cmd_cpy, cmd);
           return cmd_cpy;
         }
       }
     }
   }
-}
-
-  /*more to do*/
+  return cmd_cpy;
 }
 
 /*if cmd is a path, return it without changing it*/
