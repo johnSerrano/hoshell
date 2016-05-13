@@ -1,16 +1,21 @@
 #include <stdlib.h>
+#include <dirent.h>
+#include <stdio.h>
 #include "utils.h"
 
 void *ret_correct_path(char *cmd, char **env) {
-  char *cmd_cpy = *cmd;
-  char **env_cpy = **env;
-  char **path, char **path_cpy;
+  char *cmd_cpy = cmd;
+  char **env_cpy = env;
+  char **path;
   DIR *pDir;
   struct dirent *pDirent;
   int cmd_len;
 
+  printf("cmd: %s\n", cmd);
+  printf("cmd_cpy: %s\n", cmd_cpy);
+
   /*if cmd is a path, return it without changing it*/
-  if (check_path(*cmd_cpy) == 1) {
+  if (check_path(cmd_cpy) == 1) {
     return cmd;
   }
 
@@ -22,19 +27,18 @@ void *ret_correct_path(char *cmd, char **env) {
       break;
     }
   }
-  path_cpy = path;
 
   /*search thru path for cmd */
-  while (**path_cpy != 0) {
+  while (**path != 0) {
     /* -> open path find file return cmd after str cat*/
-    pDir = openddir(*path_cpy);
+    pDir = opendir(*path);
     if (pDir == NULL) {
       continue;
     }
     else {
       while ((pDirent = readdir(pDirr)) != NULL) {
         if (pDirent->d_name == cmd) {
-          cmd_cpy = str_cat(*path_cpy, *cmd);
+          cmd_cpy = str_cat(*path, *cmd);
           return cmd_cpy;
         }
       }

@@ -17,3 +17,5 @@ char * str_cat(char *dest, char *src);
 char * str_ncat(char *dest, char *src, int len);
 void pwd();
 char *get_wd();
+void *ret_correct_path(char *cmd, char **env);
+int check_path(char *cmd_cpy);
