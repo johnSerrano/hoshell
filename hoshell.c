@@ -38,16 +38,7 @@ void fork_exec(char **command, char **env) {
   int pid;
   char *cmd = command[0];
 
-  /*TODO (jo) link to env or PATH function here in Progress*/
-
   if (check_builtins(command, env)) return;
-
-  /*
-  TODO - run path function return command(full path)
-
-  cmd = either command[0] OR returned command from above
-  */
-
   cmd = ret_correct_path(cmd, env);
 
   if (cmd == NULL) {
@@ -64,6 +55,7 @@ void fork_exec(char **command, char **env) {
     wait(&status);
     update_status(status);
   }
+  free(cmd);
   return;
 }
 
