@@ -29,6 +29,7 @@ void *ret_correct_path(char *cmd, char **env) {
       string_copy(str, path[1]);
       free_command(path);
       path = string_split(str, ':');
+      free(str);
     }
   }
 
