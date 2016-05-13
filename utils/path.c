@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <dirent.h>
-#include <stdio.h>
 #include <string.h>
 #include "utils.h"
 
@@ -63,8 +62,6 @@ int check_path(char *cmd_cpy) {
 /*
 
 TODO:
-  open folders and paths
-  replace strncat with your own strncat
   malloc all the things!!!
   free all the things!!!
 
