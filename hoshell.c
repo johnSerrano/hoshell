@@ -21,10 +21,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 
     /*ignore comments*/
     command = string_split(line, '#');
+    if (command[0] == NULL) continue;
     string_copy(line, command[0]);
     free_command(command);
 
     command = string_split(line, ' ');
+    if (command[0] == NULL) continue;
 
     fork_exec(command, env);
     free_command(command);

@@ -10,17 +10,24 @@ char **string_split(char *str, char seperator) {
 
   ptr = str;
   while (*ptr != 0) {
-    if (*ptr == seperator) {
-      count++;
-      while (*ptr == seperator && *(ptr+1) != 0) ptr++;
-    }
-    ptr++;
+    while (*ptr == seperator) ptr++;
+    if (*ptr == 0) break;
+    while (*ptr != seperator && *ptr != 0) ptr++;
+    count++;
+  }
+
+  /* empty string after split */
+  if (count == 0) {
+    ret = malloc(sizeof(char *)*1);
+    ret[0] = NULL;
+    return ret;
   }
 
   ret = malloc(sizeof(char *) * (count+2));
   ptr = str;
 
   while (*ptr != 0) {
+    while (*ptr == seperator) ptr++;
     count = 0;
     fast = ptr;
 
