@@ -45,7 +45,8 @@ void *ret_correct_path(char *cmd, char **env) {
       }
     }
   }
-  return cmd_cpy;
+  /* Command not found, return NULL */
+  return NULL;
 }
 
 /*if cmd is a path, return it without changing it*/

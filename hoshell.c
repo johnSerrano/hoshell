@@ -50,6 +50,11 @@ void fork_exec(char **command, char **env) {
 
   cmd = ret_correct_path(cmd, env);
 
+  if (cmd == NULL) {
+    write(2, "Command not found\n", 18);
+    return;
+  }
+
   pid = fork();
   if (pid == -1) {
     write(2, "Fork failed", 11);
