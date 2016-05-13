@@ -44,7 +44,8 @@ void fork_exec(char **command, char **env) {
   cmd = ret_correct_path(cmd, env);
 
   if (cmd == NULL) {
-    write(2, "Command not found\n", 18);
+    write(2, command[0], str_len(command[0]));
+    write(2, ": Command not found\n", 20);
     return;
   }
 

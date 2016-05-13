@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include "utils.h"
 
+/*function will return the correct cmd to run or NULL if no cmd*/
 void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
   char *cmd_cpy;
   char **path;
@@ -25,6 +26,7 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
     close(i);
     return cmd_cpy;
   }
+  
   str = get_env("PATH");
   path = string_split(str, ':');
 
