@@ -14,7 +14,8 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode);
 char *get_wd();
 int is_root(DIR *dir, unsigned int self_inode);
 unsigned int get_self_inode(DIR *dir);
-
+int check_inode(char *reverse_path, unsigned int search_inode,
+                struct dirent *dir_entry);
 void pwd() {
   char *wd = get_wd();
 
@@ -44,7 +45,7 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode) 
   dir_entry = readdir(dir);
 
    while (dir_entry != NULL) {
-     if (dir_entry->d_ino == search_inode) {
+     if (check_inode(reverse_path, search_inode, dir_entry)) {
        /* prepend name/ to path */
        path = path_concat(path, dir_entry->d_name);
        /* break recursion if no parent */
@@ -95,6 +96,25 @@ unsigned int get_self_inode(DIR *dir) {
   }
   rewinddir(dir);
   return ret;
+}
+
+/* A better check than using dirent struct inode field */
+int check_inode(char *reverse_path, unsigned int search_inode,
+                struct dirent *dir_entry) {
+  DIR *checkdir;
+  char *r_r_path;
+  unsigned int check_inode;
+  r_r_path = malloc(str_len(reverse_path) + str_len(dir_entry->d_name) + 2);
+  r_r_path = string_copy(r_r_path, reverse_path);
+  str_cat(r_r_path, "/");
+  str_cat(r_r_path, dir_entry->d_name);
+  checkdir = opendir(r_r_path);
+  if (checkdir == NULL) return 0;
+  check_inode = get_self_inode(checkdir);
+  closedir(checkdir);
+  free(r_r_path);
+  if (check_inode == search_inode) return 1;
+  return 0;
 }
 
 /*Don't use this unless you know what you are doing, it can damage things*/
