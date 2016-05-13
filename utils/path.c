@@ -34,10 +34,15 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
     else {
       while ((pDirent = readdir(pDir)) != NULL) {
         if (strings_compare(cmd, pDirent->d_name) == 0) {
+          free(cmd_cpy);
           cmd_cpy = malloc(sizeof(char)*(str_len(path[i]) + str_len(cmd) + 2));
           cmd_cpy = string_copy(cmd_cpy, path[i]);
           str_cat(cmd_cpy, "/");
           str_cat(cmd_cpy, cmd);
+          free_command(path);
+          free(str);
+          closedir(pDir);
+          return cmd_cpy;
         }
       }
     }
@@ -58,18 +63,3 @@ int check_path(char *cmd_cpy) {
   }
   return 0;
 }
-
-
-/*
-
-TODO:
-  malloc all the things!!!
-  free all the things!!!
-
-  ~~
-  return char * thats abs path of program+programname
-
-  in hoshell.c
-    in fork_exec
-
-*/
