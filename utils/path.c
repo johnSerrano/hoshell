@@ -48,7 +48,8 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
     closedir(pDir);
   }
   free_command(path);
-  return cmd_cpy;
+  /* Command not found, return null */
+  return NULL;
 }
 
 /*if cmd is a path, return it without changing it*/
