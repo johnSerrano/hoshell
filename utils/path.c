@@ -4,15 +4,16 @@
 #include <stdio.h>
 #include "utils.h"
 
-void *ret_correct_path(char *cmd, char **env) {
-  char *cmd_cpy = cmd;
-  char **env_cpy = env;
+void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
+  char *cmd_cpy;
   char **path;
-  char *en_var;
   char *str;
   DIR *pDir;
   struct dirent *pDirent;
   int i;
+
+  cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1);
+  cmd_cpy = string_copy(cmd_cpy, cmd);
 
   /*if cmd is a path, return it without changing it*/
   if (check_path(cmd_cpy) == 1) {
@@ -20,17 +21,8 @@ void *ret_correct_path(char *cmd, char **env) {
     return cmd;
   }
 
-  /*splits the path env variable from env variables and splits it into paths*/
-  for (i=0; env_cpy[i] != 0; i++){
-    en_var = env_cpy[i];
-    if (en_var[0] == 'P' && en_var[1] == 'A' && en_var[2] == 'T' && en_var[3] == 'H') {
-      path = string_split(env_cpy[i], '=');
-      str = malloc(str_len(path[1]));
-      string_copy(str, path[1]);
-      free_command(path);
-      path = string_split(str, ':');
-    }
-  }
+  str = get_env("PATH");
+  path = string_split(str, ':');
 
   /*search thru path for cmd */
   for (i=0; path[i] != 0; i++) {
@@ -42,10 +34,10 @@ void *ret_correct_path(char *cmd, char **env) {
     else {
       while ((pDirent = readdir(pDir)) != NULL) {
         if (strings_compare(cmd, pDirent->d_name) == 0) {
-          cmd_cpy = path[i];
+          cmd_cpy = malloc(sizeof(char)*(str_len(path[i]) + str_len(cmd) + 2));
+          cmd_cpy = string_copy(cmd_cpy, path[i]);
           str_cat(cmd_cpy, "/");
           str_cat(cmd_cpy, cmd);
-          printf("test: %s$end\n", cmd_cpy);
         }
       }
     }

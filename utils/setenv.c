@@ -16,7 +16,7 @@ void init_env() {
 
   for (i=0 ; i<size ; i++)
   {
-    var = (char*) malloc (str_len(environ[i])*sizeof(char)+1);
+    var = (char*) malloc ((str_len(environ[i])+1)*sizeof(char));
     string_copy(var, environ[i]);
     environ_local[i] = var;
   }
@@ -75,7 +75,7 @@ void set_env(char *name, char *value) {
 
   /* Var not found in env. need to add it. */
   size = len_command(environ_local);
-  environ_local = realloc(environ_local, (size + 1) * sizeof(char *));
+  environ_local = realloc(environ_local, (size + 2) * sizeof(char *));
   environ_local[size] = var;
   environ_local[size+1] = NULL;
   environ = environ_local;
