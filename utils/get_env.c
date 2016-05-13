@@ -20,7 +20,7 @@ char *get_env(char *check) {
         ptr++;
       }
       ptr++;
-      ret = malloc(sizeof(char) * str_len(ptr));
+      ret = malloc(sizeof(char) * (str_len(ptr)+1));
       string_copy(ret, ptr);
       return ret;
       free_command(env_var);

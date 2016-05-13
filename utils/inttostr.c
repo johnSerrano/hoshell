@@ -27,10 +27,13 @@ char *int_to_string(int n)
 
 char *add_digit(char digit, char *str) {
   char *newdigit = malloc(2*sizeof(char));
+  char *scpy = malloc(sizeof(char) * (str_len(str) + 2));
   newdigit[0] = digit;
   newdigit[1] = 0;
-  str = str_cat(str, newdigit);
-  return str;
+  scpy = string_copy(scpy, str);
+  scpy = str_cat(scpy, newdigit);
+  free(str);
+  return scpy;
 }
 
 char *do_work(int n, char *str)
