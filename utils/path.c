@@ -1,7 +1,9 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <dirent.h>
 #include <string.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include "utils.h"
 
 void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
@@ -17,8 +19,11 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
 
   /*if cmd is a path, return it without changing it*/
   if (check_path(cmd_cpy) == 1) {
-    free(cmd_cpy);
-    return cmd;
+    /* check if path exists */
+    i = open(cmd_cpy, O_RDONLY);
+    if (i < 0) return NULL;
+    close(i);
+    return cmd_cpy;
   }
   str = get_env("PATH");
   path = string_split(str, ':');
