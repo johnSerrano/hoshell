@@ -29,6 +29,12 @@ char *get_wd() {
   char *reverse_path = malloc(sizeof(char) * 3);
   DIR *dir = opendir(".");
   int self_inode = get_self_inode(dir);
+  if (is_root(dir, self_inode)) {
+    free(path);
+    path = malloc(sizeof(char) * 2);
+    str_cat(path, "/");
+    return path;
+  }
   closedir(dir);
   string_copy(path, "");
   string_copy(reverse_path, "..");
