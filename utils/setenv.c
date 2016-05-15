@@ -4,7 +4,10 @@
 
 extern char **environ;
 
-/* Move environ to the heap so we can add new variables. Run this in main */
+/*
+ * Function to move environ to the heap so we can add
+ * new variables. Run this in main.
+ */
 void init_env() {
   char **environ_local = environ;
   char *var;
@@ -24,7 +27,9 @@ void init_env() {
   environ = environ_local;
 }
 
-/* get index of check in env */
+/*
+ * Function to get index of check in env
+ */
 int get_env_index(char **env, char *check) {
   int i = 0;
   char **env_var;
@@ -41,7 +46,10 @@ int get_env_index(char **env, char *check) {
   return -1;
 }
 
-/* create an environ variable string from a name and a value. copies into dest*/
+/*
+ * Function to create an environ variable string from a name
+ * and a value. copies into dest
+ */
 void concat_to_env(char *name, char *value, char *dest) {
   while (*name != 0) {
     *dest = *name;
@@ -58,7 +66,9 @@ void concat_to_env(char *name, char *value, char *dest) {
   *dest = 0;
 }
 
-/* sets an environ variable */
+/*
+ * Function that sets an environ variable
+ */
 void set_env(char *name, char *value) {
   char **environ_local = environ;
   char *var;

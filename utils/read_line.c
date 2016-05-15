@@ -2,6 +2,9 @@
 #include <unistd.h>
 #include "utils.h"
 
+/*
+ * Function that will read the line inputed in the shell
+ */
 char *read_line(int fd) {
     int maximumLineLength = 128;
     char *lineBuffer = malloc(sizeof(char) * maximumLineLength);

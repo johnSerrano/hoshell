@@ -6,7 +6,9 @@
 #include <fcntl.h>
 #include "utils.h"
 
-/*function will return the correct cmd to run or NULL if no cmd*/
+/*
+ *function will return the correct cmd to run or NULL if no cmd
+ */
 void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
   char *cmd_cpy;
   char **path;
@@ -30,17 +32,18 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
     return cmd_cpy;
   }
 
+  /*Splitting path to get all path directories needed*/
   str = get_env("PATH");
   path = string_split(str, ':');
 
-  /*search thru path for cmd */
+  /*search thru each paths' directories for cmd */
   for (i=0; path[i] != 0; i++) {
-    /* -> open path find file return cmd after str cat*/
     pDir = opendir(path[i]);
-
+    /*Searching the opened dir for cmd*/
     while ((pDirent = readdir(pDir)) != NULL) {
       if (strings_compare(cmd, pDirent->d_name) == 0) {
         free(cmd_cpy);
+        /*recreating correct path to cmd from path dir + cmd*/
         cmd_cpy = malloc(sizeof(char)*(str_len(path[i]) + str_len(cmd) + 2));
         cmd_cpy = string_copy(cmd_cpy, path[i]);
         str_cat(cmd_cpy, "/");
@@ -60,7 +63,9 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env) {
   return NULL;
 }
 
-/*if cmd is a path, return it without changing it*/
+/*
+ * if cmd is a path, return it without changing it
+ */
 int check_path(char *cmd_cpy) {
   while (*cmd_cpy != 0) {
     if (*cmd_cpy == '/') {

@@ -6,6 +6,9 @@
 char *do_work(int, char*);
 char *add_digit(char digit, char *str);
 
+/*
+ * Function to change an int to a string
+ */
 char *int_to_string(int n)
 {
   char *str = malloc(sizeof(char)*1);
@@ -25,6 +28,9 @@ char *int_to_string(int n)
   return str;
 }
 
+/*
+ * Function to add a digit to
+ */
 char *add_digit(char digit, char *str) {
   char *newdigit = malloc(2*sizeof(char));
   char *scpy = malloc(sizeof(char) * (str_len(str) + 2));
@@ -36,6 +42,9 @@ char *add_digit(char digit, char *str) {
   return scpy;
 }
 
+/*
+ * Function to do???
+ */
 char *do_work(int n, char *str)
 {
 	int divisor = 1;

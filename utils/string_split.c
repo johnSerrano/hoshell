@@ -1,5 +1,9 @@
 #include <stdlib.h>
 
+/*
+ * Function that splits strings into array of strings depending on
+ * seperator.
+ */
 char **string_split(char *str, char seperator) {
   char **ret;
   char *ret_ptr;

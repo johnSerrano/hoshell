@@ -4,6 +4,9 @@
 
 extern char **environ;
 
+/*
+ * Function that exits out of the shell
+ */
 void cmd_exit(char **command) {
   int arg_val;
   free_command(environ);

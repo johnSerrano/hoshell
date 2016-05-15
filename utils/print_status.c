@@ -1,6 +1,9 @@
 #include "utils.h"
 #include <unistd.h>
 
+/*
+ * Function to print the status of a program <?>
+ */
 void print_status(void) {
   char *status = get_env("?");
   write(1, status, str_len(status));

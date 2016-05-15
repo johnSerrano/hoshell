@@ -3,6 +3,9 @@
 
 extern char **environ;
 
+/*
+ * Function that prints the environment variables
+ */
 int print_env() {
   char** env = environ;
   for ( ; *env!=0 ; env++)

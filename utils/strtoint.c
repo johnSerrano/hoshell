@@ -1,5 +1,8 @@
 int get_value(int, char *, char *);
 
+/*
+ * Function that converts string to int.
+ */
 int string_to_int(char *s) {
 	int positive = 1;
 	char *start = s;
@@ -25,6 +28,10 @@ int string_to_int(char *s) {
 	return (get_value(positive, start, end));
 }
 
+/*
+ * Function that returns the value of a number
+ * (positive or negative).
+ */
 int get_value(int positive, char *start, char *end) {
 	char *current_char;
 	int i;

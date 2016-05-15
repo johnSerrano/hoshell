@@ -7,6 +7,7 @@
 #include <string.h>
 
 /* NOTE: LEAKS 50B every time you run pwd */
+/* TODO: cleaning up file. add comments. check line length*/
 
 char *path_concat(char *path, char *newname);
 char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode);
