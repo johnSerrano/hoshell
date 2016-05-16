@@ -3,7 +3,8 @@ int get_value(int, char *, char *);
 /*
  * Function that converts string to int.
  */
-int string_to_int(char *s) {
+int string_to_int(char *s)
+{
 	int positive = 1;
 	char *start = s;
 	char *end = s;
@@ -18,7 +19,6 @@ int string_to_int(char *s) {
 		return (0);
 	}
 
-
 	end = start;
 	while (*end >= '0' && *end <= '9') {
 		end++;
@@ -32,7 +32,8 @@ int string_to_int(char *s) {
  * Function that returns the value of a number
  * (positive or negative).
  */
-int get_value(int positive, char *start, char *end) {
+int get_value(int positive, char *start, char *end)
+{
 	char *current_char;
 	int i;
 	long current_int;
@@ -40,13 +41,11 @@ int get_value(int positive, char *start, char *end) {
 
 	for (current_char = start; current_char <= end; current_char++) {
 		current_int = *current_char - '0';
-		for (i = 0; i < end - current_char; i++) {
+		for (i = 0; i < end - current_char; i++)
 			current_int *= 10;
-		}
 		total += current_int;
-		if (total * positive > 2147483647 || total * positive < -2147483648) {
+		if (total * positive > 2147483647 || total * positive < -2147483648)
 			return (0);
-		}
 	}
 
 	return (positive * (int) total);

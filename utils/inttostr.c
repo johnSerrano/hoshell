@@ -11,39 +11,40 @@ char *add_digit(char digit, char *str);
  */
 char *int_to_string(int n)
 {
-  char *str = malloc(sizeof(char)*1);
-  *str = 0;
+	char *str = malloc(sizeof(char)*1);
+	*str = 0;
 
 	if (n < 0) {
-    str = add_digit('-', str);
+		str = add_digit('-', str);
 	} else {
-    n = 0-n;
-  }
+		n = 0-n;
+	}
 	if (n == 0) {
-    str = add_digit('0', str);
+		str = add_digit('0', str);
 	}
 	else {
 		str = do_work(n, str);
 	}
-  return str;
+	return str;
 }
 
 /*
- * Function to add a digit to
+ * Function to add a digit to TODO
  */
-char *add_digit(char digit, char *str) {
-  char *newdigit = malloc(2*sizeof(char));
-  char *scpy = malloc(sizeof(char) * (str_len(str) + 2));
-  newdigit[0] = digit;
-  newdigit[1] = 0;
-  scpy = string_copy(scpy, str);
-  scpy = str_cat(scpy, newdigit);
-  free(str);
-  return scpy;
+char *add_digit(char digit, char *str)
+{
+	char *newdigit = malloc(2*sizeof(char));
+	char *scpy = malloc(sizeof(char) * (str_len(str) + 2));
+	newdigit[0] = digit;
+	newdigit[1] = 0;
+	scpy = string_copy(scpy, str);
+	scpy = str_cat(scpy, newdigit);
+	free(str);
+	return scpy;
 }
 
 /*
- * Function to do???
+ * Function to do??? TODO
  */
 char *do_work(int n, char *str)
 {
@@ -58,8 +59,8 @@ char *do_work(int n, char *str)
 		int to_print = n / divisor;
 		n -= to_print * divisor;
 		divisor /= 10;
-    to_print = 0-to_print;
-	  str = add_digit('0' + to_print, str);
+		to_print = 0-to_print;
+		str = add_digit('0' + to_print, str);
 
 	}
   return str;
