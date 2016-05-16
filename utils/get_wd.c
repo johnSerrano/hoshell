@@ -22,6 +22,7 @@ void pwd()
 		return;
 	write(1, wd, str_len(wd));
 	write(1, "\n", 1);
+	free(wd);
 }
 
 /*
@@ -43,7 +44,8 @@ char *get_wd()
 	closedir(dir);
 	string_copy(path, "");
 	string_copy(reverse_path, "..");
-	return get_wd_recurse(path, reverse_path, self_inode);
+	path = get_wd_recurse(path, reverse_path, self_inode);
+	return path;
 }
 
 /*
@@ -64,6 +66,7 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode)
 			/* break recursion if no parent */
 			if (root_boolean) {
 				path = path_concat(path, "");
+				free(reverse_path);
 				closedir(dir);
 				return path;
 			}
@@ -93,8 +96,10 @@ int check_inode(char *reverse_path, unsigned int search_inode,
 	str_cat(r_r_path, "/");
 	str_cat(r_r_path, dir_entry->d_name);
 	checkdir = opendir(r_r_path);
-	if (checkdir == NULL)
+	if (checkdir == NULL) {
+		free(r_r_path);
 		return 0;
+	}
 	check_inode = get_self_inode(checkdir);
 	closedir(checkdir);
 	free(r_r_path);
