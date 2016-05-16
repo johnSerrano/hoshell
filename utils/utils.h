@@ -6,7 +6,7 @@ int strings_compare(char *s1, const char *s2);
 void cmd_exit(char **command);
 char *string_copy(char *dest, char *src);
 char *read_line(int fd);
-char **string_split(char *str, char seperator);
+char **string_split(char *ptr, char seperator);
 int print_env();
 int str_len(char *str);
 void free_command(char **command);

@@ -29,14 +29,13 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, 
 		string_copy(line, command[0]);
 		free_command(command);
 		command = string_split(line, ' ');
+		free(line);
 		if (command[0] == NULL) {
 			free_command(command);
-			free(line);
 			continue;
 		};
 		fork_exec(command, env);
 		free_command(command);
-		free(line);
 	}
 }
 
