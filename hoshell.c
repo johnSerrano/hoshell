@@ -72,6 +72,7 @@ void fork_exec(char **command, char **env)
 /*
  * Function to check builtin commands before searching path.
  * returns 1 if found, 0 otherwise.
+ * TODO: make this use a function pointer array or something else sane
  */
 int check_builtins(char **command, char **env)
 {

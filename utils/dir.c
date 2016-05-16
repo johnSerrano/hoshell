@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 /*
  * Function returns 1 if dir is root, 0 otherwise
  */
@@ -37,4 +38,11 @@ unsigned int get_self_inode(DIR *dir)
 	}
 	rewinddir(dir);
 	return ret;
+}
+
+int is_dir(char *file)
+{
+	struct stat *filestat = malloc(sizeof(struct stat));
+	stat(file, filestat);
+	return S_ISDIR(filestat->st_mode);
 }

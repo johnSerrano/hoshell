@@ -25,3 +25,4 @@ void print_status(void);
 char *get_correct_cmd_path(char **path, char *cmd_cpy, char *cmd);
 int is_root(DIR *dir, unsigned int self_inode);
 unsigned int get_self_inode(DIR *dir);
+int is_dir(char *file);

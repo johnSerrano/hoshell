@@ -4,11 +4,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 #include "utils.h"
 
 /*
  * Function will return the correct cmd to run or NULL if no cmd
- * TODO reduce function to multiple functions.
  * TODO reduce numbers of while and ifs statements.
  */
 void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
@@ -16,18 +16,15 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 	char *cmd_cpy;
 	char **path;
 	char *str;
-	int i;
-	cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1); /*TODO leaks*/
+	cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1);
 	cmd_cpy = string_copy(cmd_cpy, cmd);
 	/*if cmd is a path, return it without changing it*/
 	if (check_path(cmd_cpy) == 1) {
 		/* check if path exists */
-		i = open(cmd_cpy, O_RDONLY);
-		if (i < 0) {
+		if (is_dir(cmd_cpy) || access(cmd_cpy, X_OK) != 0) {
 			free(cmd_cpy);
 			return NULL;
 		}
-		close(i);
 		return cmd_cpy;
 	}
 	/*Splitting path to get all path directories needed*/
@@ -49,6 +46,8 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
  */
 int check_path(char *cmd_cpy)
 {
+	if (is_dir(cmd_cpy))
+		return 1;
 	while (*cmd_cpy != 0) {
 		if (*cmd_cpy == '/')
 			return 1;
