@@ -22,3 +22,5 @@ pathtest:
 	ar -rc libutils.a path-test.o print_status.o exit.o inttostr.o strtoint.o strncat.o update_status.o cd.o get_wd.o get_env.o len.o setenv.o strcmp.o read_line.o free_command.o string_copy.o string_split.o env.o
 	rm path-test.o print_status.o exit.o inttostr.o strtoint.o len.o strcmp.o strncat.o update_status.o cd.o get_wd.o get_env.o read_line.o setenv.o string_copy.o string_split.o free_command.o env.o
 	gcc -g -pedantic -Wall -Werror -Wextra hoshell.c libutils.a -o hoshell
+
+redbg: clean dbg
