@@ -10,6 +10,8 @@ void cd(char **command)
 {
 	char *wd = get_wd();
 	char *address;
+	address = malloc(sizeof(char) * str_len(command[1])+1);
+	string_copy(address, command[1]);
 	if (len_command(command) <= 1) {
 		address = get_env("HOME");
 	}

@@ -59,7 +59,11 @@ char **string_split(char *str, char seperator)
 	return ret;
 }
 
-int get_words(char *ptr, char seperator) {
+/*
+ *
+ */
+int get_words(char *ptr, char seperator)
+{
 	int count = 0;
 	while (*ptr != 0) {
 		while (*ptr == seperator)
