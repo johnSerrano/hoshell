@@ -85,8 +85,10 @@ int check_builtins(char **command, char **env)
 		return 1;
 	}
 	if (strings_compare(command[0], "cd") == 0) {
-		if (len_command(command) <= 1)		/* error */
+		if (len_command(command) <= 1) {
+			cd("");
 			return 1;
+		}
 		cd(command[1]);
 		return 1;
 	}

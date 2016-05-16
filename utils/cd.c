@@ -13,6 +13,10 @@ void cd(char *address)
 	if (strings_compare(address, "-") == 0) {
 		address = get_env("OLDPWD");
 	}
+	if (strings_compare(address, "") == 0) {
+		address = get_env("HOME");
+	}
+
 	/*error checking if path to dir doesn't exist*/
 	if (chdir(address) == -1) {
 		/*set_env*/
