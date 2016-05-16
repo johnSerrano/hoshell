@@ -25,6 +25,7 @@ void init_env()
 	}
 	environ_local[size] = 0;
 	environ = environ_local;
+	update_status(0);
 }
 
 /*
