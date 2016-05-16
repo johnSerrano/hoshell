@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 /*
- * Fucntion that frees a char **
+ * Function that frees a char **
  */
 void free_command(char **command) {
   int counter = 0;
