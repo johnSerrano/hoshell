@@ -1,3 +1,4 @@
+#include <dirent.h>
 char *int_to_string(int n);
 int string_to_int(char *s);
 int len_command(char **command);
@@ -22,3 +23,5 @@ int check_path(char *cmd_cpy);
 void update_status(int status);
 void print_status(void);
 char *get_correct_cmd_path(char **path, char *cmd_cpy, char *cmd);
+int is_root(DIR *dir, unsigned int self_inode);
+unsigned int get_self_inode(DIR *dir);

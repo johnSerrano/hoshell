@@ -6,21 +6,14 @@
 #include <stdio.h>
 #include <string.h>
 
-/* NOTE: LEAKS 50B every time you run pwd */
-/* TODO: cleaning up file. add comments. check line length*/
-/* TODO: cleaning up file. too many functions*/
-
-
 char *path_concat(char *path, char *newname);
 char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode);
 char *get_wd();
-int is_root(DIR *dir, unsigned int self_inode);
-unsigned int get_self_inode(DIR *dir);
 int check_inode(char *reverse_path, unsigned int search_inode,
                 struct dirent *dir_entry);
 
 /*
- * Function TODO comment
+ * Prints working directory.
  */
 void pwd()
 {
@@ -32,7 +25,8 @@ void pwd()
 }
 
 /*
- * Function TODO comment
+ * Returns a char *containing the current working directory path. This does not
+ * follow symlinks.
  */
 char *get_wd()
 {
@@ -53,7 +47,8 @@ char *get_wd()
 }
 
 /*
- * Function TODO comment, too many indents.
+ * Recursion function for pwd. Traverses directories towards root and builds
+ * path string.
  */
 char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode)
 {
@@ -62,7 +57,6 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode)
 	int root_boolean = is_root(dir, self_inode);
 	struct dirent *dir_entry;
 	dir_entry = readdir(dir);
-
 	while (dir_entry != NULL) {
 		if (check_inode(reverse_path, search_inode, dir_entry)) {
 			/* prepend name/ to path */
@@ -84,54 +78,17 @@ char *get_wd_recurse(char *path, char *reverse_path, unsigned int search_inode)
 }
 
 /*
- * Function returns 1 if dir is root, 0 otherwise
- */
-int is_root(DIR *dir, unsigned int self_inode)
-{
-	int ret = 1;
-	struct dirent *dir_entry;
-	if (!dir)
-		return -1;
-	dir_entry = readdir(dir);
-	while (dir_entry != NULL) {
-		if (strings_compare(dir_entry->d_name, "..") == 0) {
-			if ((unsigned int) dir_entry->d_ino != self_inode)
-				ret = 0;
-		}
-		dir_entry = readdir(dir);
-	}
-	rewinddir(dir);
-	return ret;
-}
-
-/*
- * Function returns the inode of input directory
- */
-unsigned int get_self_inode(DIR *dir)
-{
-	unsigned int ret = 0;
-	struct dirent *dir_entry;
-	dir_entry = readdir(dir);
-	while (dir_entry != NULL) {
-		if (strings_compare(dir_entry->d_name, ".") == 0)
-			ret = dir_entry->d_ino;
-		dir_entry = readdir(dir);
-	}
-	rewinddir(dir);
-	return ret;
-}
-
-/*
  * A better check than using dirent struct inode field.
  * Checks each directory's inode from within that directory to guarantee
  * functionality at mount points
  */
-int check_inode(char *reverse_path, unsigned int search_inode, struct dirent *dir_entry)
+int check_inode(char *reverse_path, unsigned int search_inode,
+		struct dirent *dir_entry)
 {
 	DIR *checkdir;
 	char *r_r_path;
 	unsigned int check_inode;
-	r_r_path = malloc(str_len(reverse_path) + str_len(dir_entry->d_name) + 2);
+	r_r_path = malloc(str_len(reverse_path)+str_len(dir_entry->d_name)+2);
 	r_r_path = string_copy(r_r_path, reverse_path);
 	str_cat(r_r_path, "/");
 	str_cat(r_r_path, dir_entry->d_name);
@@ -147,6 +104,7 @@ int check_inode(char *reverse_path, unsigned int search_inode, struct dirent *di
 }
 
 /*
+ * Prepends a directory to a path string.
  * Don't use this unless you know what you are doing, it can damage things
  */
 char *path_concat(char *path, char *newname)
