@@ -17,7 +17,7 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 	char **path;
 	char *str;
 	int i;
-	cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1);
+	cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1); /*TODO leaks*/
 	cmd_cpy = string_copy(cmd_cpy, cmd);
 	/*if cmd is a path, return it without changing it*/
 	if (check_path(cmd_cpy) == 1) {

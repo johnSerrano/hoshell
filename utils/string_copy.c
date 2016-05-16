@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 /*
  * Function that copies a str into another.
  */

@@ -42,6 +42,7 @@ char *add_digit(char digit, char *str)
 	scpy = string_copy(scpy, str);
 	scpy = str_cat(scpy, newdigit);
 	free(str);
+	free(newdigit);
 	return scpy;
 }
 
