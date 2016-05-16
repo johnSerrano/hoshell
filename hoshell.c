@@ -10,7 +10,8 @@ int check_builtins(char **command, __attribute__((unused)) char **env);
 /*
  * Highly Original SHELL
  */
-int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv, char **env)
+int main(__attribute__((unused)) int argc,
+	 __attribute__((unused)) char **argv, char **env)
 {
 	char **command;
 	char *line;
