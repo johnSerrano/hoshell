@@ -4,6 +4,7 @@
 
 /*
  * Function that will change directories
+ * CHECKED: functions, length, width, brackets, comments
  */
 void cd(char *address)
 {

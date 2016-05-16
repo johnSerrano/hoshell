@@ -1,5 +1,6 @@
 /*
  * Function get the length of a char **
+ * CHECKED: functions, length, width, brackets, comments
  */
 int len_command(char **command)
 {

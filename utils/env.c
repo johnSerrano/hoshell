@@ -5,6 +5,7 @@ extern char **environ;
 
 /*
  * Function that prints the environment variables
+ * CHECKED: functions, length, width, brackets, comments
  */
 int print_env()
 {

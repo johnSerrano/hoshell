@@ -8,6 +8,8 @@ char *add_digit(char digit, char *str);
 
 /*
  * Function to change an int to a string
+ * CHECKED: functions, length, width, brackets
+ * TODO: comments
  */
 char *int_to_string(int n)
 {

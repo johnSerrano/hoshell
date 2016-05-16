@@ -5,7 +5,8 @@
 extern char **environ;
 
 /*
- * Function that exits out of the shell
+ * Function that exits out of the shell and frees mem
+ * CHECKED: functions, length, width, brackets, comments
  */
 void cmd_exit(char **command)
 {

@@ -7,6 +7,7 @@ extern char **environ;
 /*
  * Function that returns a malloc'd string containing
  * the env value.
+ * CHECKED: functions, length, width, brackets TODO comments...
  */
 char *get_env(char *check)
 {
@@ -34,5 +35,3 @@ char *get_env(char *check)
 	}
 	return 0;
 }
-
-/*TODO more comments*/
