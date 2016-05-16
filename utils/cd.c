@@ -6,20 +6,20 @@
  * Function that will change directories
  * CHECKED: functions, length, width, brackets, comments
  */
-void cd(char *address)
+void cd(char **command)
 {
 	char *wd = get_wd();
-	/*getting the old directory when '-' is the option*/
-	if (strings_compare(address, "-") == 0) {
-		address = get_env("OLDPWD");
-	}
-	if (strings_compare(address, "") == 0) {
+	char *address;
+	if (len_command(command) <= 1) {
 		address = get_env("HOME");
+	}
+	/*getting the old directory when '-' is the option*/
+	else if (strings_compare(command[1], "-") == 0) {
+		address = get_env("OLDPWD");
 	}
 
 	/*error checking if path to dir doesn't exist*/
 	if (chdir(address) == -1) {
-		/*set_env*/
 		write(2, "cd: no such directory\n", 22);
 		return;
 	}
@@ -29,4 +29,5 @@ void cd(char *address)
 	wd = get_wd();
 	set_env("PWD", wd);
 	free(wd);
+	free(address);
 }

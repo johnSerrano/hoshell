@@ -77,7 +77,6 @@ int check_builtins(char **command, char **env)
 {
 	if (strings_compare(command[0], "exit") == 0) {
 		cmd_exit(command);
-		/* shouldn't run except if there is an error exiting */
 		return 1;
 	}
 	if (strings_compare(command[0], "env") == 0) {
@@ -85,11 +84,7 @@ int check_builtins(char **command, char **env)
 		return 1;
 	}
 	if (strings_compare(command[0], "cd") == 0) {
-		if (len_command(command) <= 1) {
-			cd("");
-			return 1;
-		}
-		cd(command[1]);
+		cd(command);
 		return 1;
 	}
 	if (strings_compare(command[0], "pwd") == 0) {

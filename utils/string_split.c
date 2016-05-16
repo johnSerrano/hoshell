@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+int get_words(char *str, char seperator);
+
 /*
  * Function that splits strings into array of strings depending on
  * seperator.
@@ -15,15 +17,7 @@ char **string_split(char *str, char seperator)
 	int word_count = 0;
 
 	ptr = str;
-	while (*ptr != 0) {
-		while (*ptr == seperator)
-			ptr++;
-		if (*ptr == 0)
-			break;
-		while (*ptr != seperator && *ptr != 0)
-			ptr++;
-		count++;
-	}
+	count = get_words(str, seperator);
 
 	/* empty string after split */
 	if (count == 0) {
@@ -63,4 +57,18 @@ char **string_split(char *str, char seperator)
 	ret[word_count] = 0;
 
 	return ret;
+}
+
+int get_words(char *ptr, char seperator) {
+	int count = 0;
+	while (*ptr != 0) {
+		while (*ptr == seperator)
+			ptr++;
+		if (*ptr == 0)
+			break;
+		while (*ptr != seperator && *ptr != 0)
+			ptr++;
+		count++;
+	}
+	return count;
 }

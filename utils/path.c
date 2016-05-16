@@ -39,7 +39,6 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 	if (cmd_cpy != NULL)
 		return cmd_cpy;
 	/* Command not found, return null */
-	free_command(path);
 	free(cmd_cpy);
 	return NULL;
 }

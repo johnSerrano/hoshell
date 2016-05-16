@@ -12,7 +12,7 @@ int str_len(char *str);
 void free_command(char **command);
 void init_env();
 void set_env(char *name, char *value);
-void cd(char *address);
+void cd(char **command);
 char *get_env(char *check);
 char *str_cat(char *dest, char *src);
 char *str_ncat(char *dest, char *src, int len);
