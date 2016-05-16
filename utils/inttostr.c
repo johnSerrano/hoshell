@@ -43,7 +43,6 @@ char *add_digit(char digit, char *str)
 	scpy = str_cat(scpy, newdigit);
 	free(str);
 	free(newdigit);
-	free(scpy);
 	return scpy;
 }
 
