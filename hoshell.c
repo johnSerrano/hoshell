@@ -21,6 +21,8 @@ int main(__attribute__((unused)) int argc,
 		write(1, "HOS :: ", 7);
 		line = read_line(0);
 		/*ignore comments*/
+		/*TODO string split on ';' and run loop around each*/
+		/*TODO after ';' check for '$'*/
 		command = string_split(line, '#');
 		if (command[0] == NULL) {
 			free_command(command);
