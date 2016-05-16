@@ -16,13 +16,9 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 	char *cmd_cpy;
 	char **path;
 	char *str;
-	DIR *pDir;
-	struct dirent *pDirent;
 	int i;
-
 	cmd_cpy = malloc(sizeof(char) * str_len(cmd) + 1);
 	cmd_cpy = string_copy(cmd_cpy, cmd);
-
 	/*if cmd is a path, return it without changing it*/
 	if (check_path(cmd_cpy) == 1) {
 		/* check if path exists */
@@ -34,35 +30,17 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 		close(i);
 		return cmd_cpy;
 	}
-
 	/*Splitting path to get all path directories needed*/
 	str = get_env("PATH");
 	path = string_split(str, ':');
-
-	/*search thru each paths' directories for cmd */
-	for (i=0; path[i] != 0; i++) {
-		pDir = opendir(path[i]);
-		/*Searching the opened dir for cmd*/
-		while ((pDirent = readdir(pDir)) != NULL) {
-			if (strings_compare(cmd, pDirent->d_name) == 0) {
-				free(cmd_cpy);
-				/*recreating correct path to cmd from path dir + cmd*/
-				cmd_cpy = malloc(sizeof(char)*(str_len(path[i]) + str_len(cmd) + 2));
-				cmd_cpy = string_copy(cmd_cpy, path[i]);
-				str_cat(cmd_cpy, "/");
-				str_cat(cmd_cpy, cmd);
-				free_command(path);
-				free(str);
-				closedir(pDir);
-				return cmd_cpy;
-			}
-		}
-		closedir(pDir);
-	}
-	free_command(path);
 	free(str);
-	free(cmd_cpy);
+	/*search thru each paths' directories for cmd */
+	cmd_cpy = get_correct_cmd_path(path, cmd_cpy, cmd);
+	if (cmd_cpy != NULL)
+		return cmd_cpy;
 	/* Command not found, return null */
+	free_command(path);
+	free(cmd_cpy);
 	return NULL;
 }
 
@@ -77,4 +55,38 @@ int check_path(char *cmd_cpy)
 		cmd_cpy++;
 	}
 	return 0;
+}
+
+/*
+ * Function to get the correct path for the cmd input
+ */
+char *get_correct_cmd_path(char **path, char *cmd_cpy, char *cmd)
+{
+	int i;
+	int s1;
+	int s2;
+	DIR *pDir;
+	struct dirent *pDirent;
+	s1 = str_len(cmd);
+	for (i=0; path[i] != 0; i++) {
+		pDir = opendir(path[i]);
+		s2 = str_len(path[i]);
+		/*Searching the opened dir for cmd*/
+		while ((pDirent = readdir(pDir)) != NULL) {
+			if (strings_compare(cmd, pDirent->d_name) == 0) {
+				/* recreating correct path to cmd from
+				 * path dir + cmd */
+				cmd_cpy = malloc(sizeof(s1 + s2 + 2));
+				cmd_cpy = string_copy(cmd_cpy, path[i]);
+				str_cat(cmd_cpy, "/");
+				str_cat(cmd_cpy, cmd);
+				free_command(path);
+				closedir(pDir);
+				return cmd_cpy;
+			}
+		}
+		closedir(pDir);
+	}
+	free_command(path);
+	return NULL;
 }

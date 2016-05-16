@@ -21,3 +21,4 @@ void *ret_correct_path(char *cmd, char **env);
 int check_path(char *cmd_cpy);
 void update_status(int status);
 void print_status(void);
+char *get_correct_cmd_path(char **path, char *cmd_cpy, char *cmd);
