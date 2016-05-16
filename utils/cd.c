@@ -10,16 +10,17 @@ void cd(char **command)
 {
 	char *wd = get_wd();
 	char *address;
-	address = malloc(sizeof(char) * str_len(command[1])+1);
-	string_copy(address, command[1]);
 	if (len_command(command) <= 1) {
 		address = get_env("HOME");
 	}
 	/*getting the old directory when '-' is the option*/
 	else if (strings_compare(command[1], "-") == 0) {
 		address = get_env("OLDPWD");
+	} else {
+		address = malloc(sizeof(char) * str_len(command[1])+1);
+		string_copy(address, command[1]);
 	}
-
+	
 	/*error checking if path to dir doesn't exist*/
 	if (chdir(address) == -1) {
 		write(2, "cd: no such directory\n", 22);
