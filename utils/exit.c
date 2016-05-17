@@ -10,7 +10,6 @@ void cmd_exit(char **command, char ***env)
 {
 	int arg_val;
 	free_command(*env);
-	free(env);
 	if (len_command(command) <= 1) {
 		free_command(command);
 		exit(0);
