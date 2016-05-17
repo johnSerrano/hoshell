@@ -2,15 +2,13 @@
 #include <stdlib.h>
 #include "utils.h"
 
-extern char **environ;
-
 /*
  * Function to move environ to the heap so we can add
  * new variables. Run this in main.
  */
-void init_env()
+char **init_env(char ***env)
 {
-	char **environ_local = environ;
+	char **environ_local = *env;
 	char *var;
 	int size;
 	int i;
@@ -19,13 +17,14 @@ void init_env()
 	environ_local = malloc ((size+1) * sizeof(char*));
 
 	for (i=0 ; i<size ; i++) {
-		var = (char*) malloc ((str_len(environ[i])+1)*sizeof(char));
-		string_copy(var, environ[i]);
+		var = (char*) malloc ((str_len((*env)[i])+1)*sizeof(char));
+		string_copy(var, (*env)[i]);
 		environ_local[i] = var;
 	}
 	environ_local[size] = 0;
-	environ = environ_local;
-	update_status(0);
+	*env = environ_local;
+	update_status(0, env);
+	return environ_local;
 }
 
 /*
@@ -72,9 +71,9 @@ void concat_to_env(char *name, char *value, char *dest)
 /*
  * Function that sets an environ variable
  */
-void set_env(char *name, char *value)
+void set_env(char *name, char *value, char ***env)
 {
-	char **environ_local = environ;
+	char **environ_local = *env;
 	char *var;
 	int var_index = get_env_index(environ_local, name);
 	int size;
@@ -94,5 +93,5 @@ void set_env(char *name, char *value)
 	environ_local = realloc(environ_local, (size + 2) * sizeof(char *));
 	environ_local[size] = var;
 	environ_local[size+1] = NULL;
-	environ = environ_local;
+	*env = environ_local;
 }

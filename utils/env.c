@@ -1,15 +1,12 @@
 #include <unistd.h>
 #include "utils.h"
 
-extern char **environ;
-
 /*
  * Function that prints the environment variables
  * CHECKED: functions, length, width, brackets, comments
  */
-int print_env()
+int print_env(char **env)
 {
-	char** env = environ;
 	for ( ; *env!=0 ; env++) {
 		char* thisEnv = *env;
 		write(1, thisEnv, str_len(thisEnv));

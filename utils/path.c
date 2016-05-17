@@ -11,7 +11,7 @@
  * Function will return the correct cmd to run or NULL if no cmd
  * TODO reduce numbers of while and ifs statements.
  */
-void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
+void *ret_correct_path(char *cmd, char **env)
 {
 	char *cmd_cpy;
 	char **path;
@@ -28,7 +28,7 @@ void *ret_correct_path(char *cmd, __attribute__((unused)) char **env)
 		return cmd_cpy;
 	}
 	/*Splitting path to get all path directories needed*/
-	str = get_env("PATH");
+	str = get_env("PATH", env);
 	path = string_split(str, ':');
 	free(str);
 	free(cmd_cpy);

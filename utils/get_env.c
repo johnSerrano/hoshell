@@ -2,16 +2,13 @@
 #include <stdlib.h>
 #include "utils.h"
 
-extern char **environ;
-
 /*
  * Function that returns a malloc'd string containing
  * the env value.
  * CHECKED: functions, length, width, brackets TODO comments...
  */
-char *get_env(char *check)
+char *get_env(char *check, char **env)
 {
-	char **env = environ;
 	int i = 0;
 	char **env_var;
 	char *ret;

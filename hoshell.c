@@ -4,8 +4,8 @@
 #include <sys/wait.h>
 #include <stdio.h> /*TODO remove after testing?*/
 
-void fork_exec(char **command, char **env);
-int check_builtins(char **command, __attribute__((unused)) char **env);
+void fork_exec(char **command, char ***env);
+int check_builtins(char **command, char ***env);
 
 /*
  * Highly Original SHELL
@@ -15,7 +15,7 @@ int main(__attribute__((unused)) int argc,
 {
 	char **command;
 	char *line;
-	init_env(); /* moves environment variables to the heap */
+	init_env(&env); /* moves environment variables to the heap */
 	/* read from stdin */
 	while (1) {
 		write(1, "HOS :: ", 7);
@@ -37,7 +37,7 @@ int main(__attribute__((unused)) int argc,
 			free_command(command);
 			continue;
 		};
-		fork_exec(command, env);
+		fork_exec(command, &env);
 		free_command(command);
 	}
 }
@@ -45,14 +45,14 @@ int main(__attribute__((unused)) int argc,
 /*
  * Function to run a command without killing the main thread
  */
-void fork_exec(char **command, char **env)
+void fork_exec(char **command, char ***env)
 {
 	int status;
 	int pid;
 	char *cmd = command[0];
 	if (check_builtins(command, env)) 	/*runs custom built cmds*/
 		return;
-	cmd = ret_correct_path(cmd, env); 	/*returns the correct cmd*/
+	cmd = ret_correct_path(cmd, *env); 	/*returns the correct cmd*/
 	if (cmd == NULL) { 			/*error checking*/
 		write(2, command[0], str_len(command[0]));
 		write(2, ": Command not found\n", 20);
@@ -62,10 +62,10 @@ void fork_exec(char **command, char **env)
 	if (pid == -1) {			/*error checking*/
 		write(2, "Fork failed", 11);
 	} else if (pid == 0) {
-		execve(cmd, command, env);	/*executing correct cmd*/
+		execve(cmd, command, *env);	/*executing correct cmd*/
 	} else {				/*TBD*/
 		wait(&status);
-		update_status(status);
+		update_status(status, env);
 	}
 	free(cmd);
 	return;
@@ -76,18 +76,18 @@ void fork_exec(char **command, char **env)
  * returns 1 if found, 0 otherwise.
  * TODO: make this use a function pointer array or something else sane
  */
-int check_builtins(char **command, char **env)
+int check_builtins(char **command, char ***env)
 {
 	if (strings_compare(command[0], "exit") == 0) {
-		cmd_exit(command);
+		cmd_exit(command, env);
 		return 1;
 	}
 	if (strings_compare(command[0], "env") == 0) {
-		print_env(env);
+		print_env(*env);
 		return 1;
 	}
 	if (strings_compare(command[0], "cd") == 0) {
-		cd(command);
+		cd(command, env);
 		return 1;
 	}
 	if (strings_compare(command[0], "pwd") == 0) {
@@ -95,7 +95,7 @@ int check_builtins(char **command, char **env)
 		return 1;
 	}
 	if (strings_compare(command[0], "$?") == 0) {
-		print_status();
+		print_status(*env);
 		return 1;
 	}
 	return 0;
