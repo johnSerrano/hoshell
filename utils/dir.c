@@ -42,7 +42,10 @@ unsigned int get_self_inode(DIR *dir)
 
 int is_dir(char *file)
 {
+	int ret;
 	struct stat *filestat = malloc(sizeof(struct stat));
 	stat(file, filestat);
-	return S_ISDIR(filestat->st_mode);
+	ret = S_ISDIR(filestat->st_mode);
+	free(filestat);
+	return ret;
 }
